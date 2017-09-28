@@ -1,0 +1,24 @@
+{
+  "name": "subleqmachine",
+  "version": "1.0.0",
+  "description": "A subleq VM in Javascript",
+  "main": "vm.js",
+  "dependencies": {
+    "fast-levenshtein": "^2.0.6",
+    "string.prototype.padend": "^3.0.0"
+  },
+  "devDependencies": {
+    "fast-levenshtein": "^2.0.6",
+    "string.prototype.padend": "^3.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "subleq",
+    "vm",
+    "javascript"
+  ],
+  "author": "Matthias Jouan <matthias.jouan@gmail.com>",
+  "license": "MIT"
+}
