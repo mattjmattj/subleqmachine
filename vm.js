@@ -29,8 +29,8 @@ const makeRandomMemory = (size) => ([...new Array(size)].map(() => Math.round(Ma
 /**
  * Binds an IO handler to a VM
  * An IO handler must implement
- *  - read: () -> integer
- *  - write: integer -> integer
+ *  - async read: () -> integer
+ *  - async write: integer -> integer
  * 
  * When performing SUBLEQ a b c : 
  *  - the read function will be called on the registered IO hander
@@ -55,11 +55,11 @@ function bindIO(vm, address, io) {
  * @param {object} vm 
  * @return {object} vm
  */
-function subleq(vm) {
+async function subleq(vm) {
     let a,b,c,valueA
 
     if (vm.io[vm.memory[vm.pc]]) {
-        a = vm.io[vm.memory[vm.pc]].read()
+        a = await vm.io[vm.memory[vm.pc]].read()
         //if we read from IO, we read the value, not a memory address
         valueA = a 
     } else {
@@ -68,7 +68,7 @@ function subleq(vm) {
     }
 
     if (vm.io[vm.memory[vm.pc+1]]) {
-        b = vm.io[vm.memory[vm.pc+1]].write(a)
+        b = await vm.io[vm.memory[vm.pc+1]].write(a)
     } else {
         b = vm.memory[vm.pc+1]
     }
@@ -91,9 +91,9 @@ function subleq(vm) {
  * @param {object} vm 
  * @param {integer} max 
  */
-function run(vm, max) {
+async function run(vm, max) {
     while (vm.pc >=0 && max>0) {
-        vm = subleq(vm)
+        vm = await subleq(vm)
         max--
     }
     return vm

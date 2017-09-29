@@ -19,16 +19,11 @@ function randomlyMutateMemory(memory) {
 const memLength = 100
 const printIO = 99
 
-var memory = subleq.makeRandomMemory(memLength)
-var bestMemory = memory
-var bestDistance = Infinity
-var bestMsg = ''
 
 const target = process.argv[2] || 'Hello!'
 var nb = 0
 
-while (true) {
-    nb++
+async function run (memory, bestMemory, bestMsg, bestDistance, nb) {
     const vm = subleq.makeVM(memory.slice())
 
     let msg = ''
@@ -44,22 +39,35 @@ while (true) {
         }
     })
 
-    subleq.run(vm, 50)
+    await subleq.run(vm, 50)
 
     const distance = levenshtein.get(msg, target)
-    if (distance <= bestDistance) {
-        bestMemory = memory.slice()
-        bestDistance = distance
-        if (bestMsg != msg) {
-            bestMsg = msg
-            console.log('>', msg)
-        }
 
-        if (distance == 0) {
-            break;
-        }
+    if (distance == 0) { //we have it !
+        console.log(memory, nb)
+        return 
     }
-    memory = randomlyMutateMemory(bestMemory.slice())
+
+    if (distance <= bestDistance) {
+        run(
+            randomlyMutateMemory(bestMemory.slice()),
+            memory.slice(),
+            bestMsg != msg ? msg : bestMsg,
+            distance,
+            nb+1
+        )
+        console.log('>', msg)
+    } else {
+        run(
+            randomlyMutateMemory(bestMemory.slice()),
+            bestMemory,
+            bestMsg,
+            bestDistance,
+            nb+1
+        )
+    }
 }
 
-console.log(bestMemory, nb)
+
+var memory = subleq.makeRandomMemory(memLength)
+run(memory, memory, '', Infinity, 0)
