@@ -56,12 +56,15 @@ function bindIO(vm, address, io) {
  * @return {object} vm
  */
 function subleq(vm) {
-    let a,b,c
+    let a,b,c,valueA
 
     if (vm.io[vm.memory[vm.pc]]) {
         a = vm.io[vm.memory[vm.pc]].read()
+        //if we read from IO, we read the value, not a memory address
+        valueA = a 
     } else {
         a = vm.memory[vm.pc]
+        valueA = vm.memory[a]
     }
 
     if (vm.io[vm.memory[vm.pc+1]]) {
@@ -77,7 +80,7 @@ function subleq(vm) {
         return vm
     }
 
-    vm.memory[b] = vm.memory[b] - vm.memory[a]
+    vm.memory[b] = vm.memory[b] - valueA
 
     vm.pc = vm.memory[b] > 0 ? vm.pc + 3 : c
     return vm
