@@ -50,7 +50,7 @@ async function run (memory, bestMemory, bestMsg, bestDistance, nb) {
 
     if (distance <= bestDistance) {
         run(
-            randomlyMutateMemory(bestMemory.slice()),
+            randomlyMutateMemory(memory.slice()),
             memory.slice(),
             bestMsg != msg ? msg : bestMsg,
             distance,

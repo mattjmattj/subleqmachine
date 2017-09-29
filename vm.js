@@ -68,7 +68,7 @@ async function subleq(vm) {
     }
 
     if (vm.io[vm.memory[vm.pc+1]]) {
-        b = await vm.io[vm.memory[vm.pc+1]].write(a)
+        b = await vm.io[vm.memory[vm.pc+1]].write(valueA)
     } else {
         b = vm.memory[vm.pc+1]
     }
@@ -80,7 +80,7 @@ async function subleq(vm) {
         return vm
     }
 
-    vm.memory[b] = vm.memory[b] - valueA
+    vm.memory[b] -= valueA
 
     vm.pc = vm.memory[b] > 0 ? vm.pc + 3 : c
     return vm
